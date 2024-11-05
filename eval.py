@@ -9,14 +9,10 @@ from openai import BaseModel, OpenAI
 
 from perry_model import StatelessPerryAdapter
 
-
 @weave.op
-async def llm_judge(system_prompt: str, model_output: str, expected: str | None, response_format: Any) -> str | BaseModel | None:
+async def llm_judge(system_prompt: str, model_output: str, response_format: Any) -> str | BaseModel | None:
     client = openai.AsyncOpenAI()
-    comparison = f"""
-    Model Output: {model_output}
-    {f"Expected: {expected}" if expected else ""}
-    """
+    comparison = f"Model Output: {model_output}"
     response: str | BaseModel | None
     if not response_format:
         completion = await client.chat.completions.create(
